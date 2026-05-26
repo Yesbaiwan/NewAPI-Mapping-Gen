@@ -1,0 +1,43 @@
+.CodeMirror {
+  height: auto !important;
+  min-height: 300px !important;
+  max-height: 600px;
+  border: 1px solid #334155;
+  border-radius: 8px;
+  font-size: 15px;
+  flex: 1;
+  background: #1e293b;
+  font-family: 'LXGW WenKai Screen', monospace;
+  color: #e2e8f0;
+}
+.CodeMirror-vscrollbar,
+.CodeMirror-hscrollbar {
+  outline: none;
+}
+.CodeMirror-scrollbar-filler,
+.CodeMirror-gutter-filler {
+  background-color: #1e293b;
+}
+.CodeMirror-focused {
+  border-color: #6366f1 !important;
+  outline: none;
+  box-shadow: 0 0 0 2px rgba(99, 102, 241, 0.2);
+}
+input[type='checkbox'].checkbox-base:checked::before {
+  content: '';
+  width: 0.65em;
+  height: 0.65em;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 16 16' fill='white' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M12.207 4.793a1 1 0 010 1.414l-5 5a1 1 0 01-1.414 0l-2-2a1 1 0 011.414-1.414L6.5 9.086l4.293-4.293a1 1 0 011.414 0z'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: contain;
+  transform: scale(1);
+}
+input[type='radio'].checkbox-base:checked::before {
+  content: '';
+  width: 0.6em;
+  height: 0.6em;
+  border-radius: 50%;
+  background-color: white;
+  transform: scale(1);
+}

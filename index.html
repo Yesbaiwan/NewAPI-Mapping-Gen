@@ -4,42 +4,28 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>NewAPI Mapping Generator</title>
-    <link
-      rel="icon"
-      type="image/png"
-      href="https://img.icons8.com/?size=100&id=POBc2SrrhhnF&format=png&color=000000"
-    />
-
-    <!-- 1. 引入霞鹜文楷屏幕阅读版 -->
-    <link
-      href="https://cdn.jsdelivr.net/npm/lxgw-wenkai-screen-web@1.521.0/style.min.css"
-      rel="stylesheet"
-    />
-
+    <link rel="icon" type="image/png" href="https://img.icons8.com/?size=100&id=POBc2SrrhhnF&format=png&color=000000" />
+    <link href="https://cdn.jsdelivr.net/npm/lxgw-wenkai-screen-web@1.521.0/style.min.css" rel="stylesheet" />
     <script src="https://cdn.tailwindcss.com"></script>
     <script>
       tailwind.config = {
         theme: {
           extend: {
             colors: {
-              // 主色调改为沉稳的靛蓝，不那么刺眼
-              primary: "#4f46e5",
-              "primary-hover": "#4338ca",
-              // 成功/警告改为更柔和的色值
-              success: "#10b981",
-              warning: "#f59e0b",
-              danger: "#ef4444",
-              // 背景色系：使用 Slate (蓝灰) 替代 Gray，更有质感
-              bg: "#0f172a", // 深蓝灰背景
-              card: "#1e293b", // 卡片背景
+              primary: '#4f46e5',
+              'primary-hover': '#4338ca',
+              success: '#10b981',
+              warning: '#f59e0b',
+              danger: '#ef4444',
+              bg: '#0f172a',
+              card: '#1e293b',
             },
-            fontFamily: {
-              sans: ['"LXGW WenKai Screen"', "sans-serif"],
-            },
+            fontFamily: { sans: ['"LXGW WenKai Screen"', 'sans-serif'] },
           },
         },
       };
     </script>
+    <!-- css-lint-disable unknownAtRules -->
     <style type="text/tailwindcss">
       @layer utilities {
         .btn-base {
@@ -65,134 +51,77 @@
         }
       }
     </style>
+    <!-- css-lint-enable unknownAtRules -->
     <style>
-      /* CodeMirror 编辑器样式 - 第三方库需要单独设置 */
-      .CodeMirror {
-        height: auto !important;
-        min-height: 300px !important;
-        max-height: 600px;
-        border: 1px solid #334155;
-        border-radius: 8px;
-        font-size: 15px;
-        flex: 1;
-        background: #1e293b;
-        font-family: "LXGW WenKai Screen", monospace;
-        color: #e2e8f0;
-      }
+.CodeMirror {
+  height: auto !important;
+  min-height: 300px !important;
+  max-height: 600px;
+  border: 1px solid #334155;
+  border-radius: 8px;
+  font-size: 15px;
+  flex: 1;
+  background: #1e293b;
+  font-family: 'LXGW WenKai Screen', monospace;
+  color: #e2e8f0;
+}
+.CodeMirror-vscrollbar,
+.CodeMirror-hscrollbar {
+  outline: none;
+}
+.CodeMirror-scrollbar-filler,
+.CodeMirror-gutter-filler {
+  background-color: #1e293b;
+}
+.CodeMirror-focused {
+  border-color: #6366f1 !important;
+  outline: none;
+  box-shadow: 0 0 0 2px rgba(99, 102, 241, 0.2);
+}
+input[type='checkbox'].checkbox-base:checked::before {
+  content: '';
+  width: 0.65em;
+  height: 0.65em;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 16 16' fill='white' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M12.207 4.793a1 1 0 010 1.414l-5 5a1 1 0 01-1.414 0l-2-2a1 1 0 011.414-1.414L6.5 9.086l4.293-4.293a1 1 0 011.414 0z'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: contain;
+  transform: scale(1);
+}
+input[type='radio'].checkbox-base:checked::before {
+  content: '';
+  width: 0.6em;
+  height: 0.6em;
+  border-radius: 50%;
+  background-color: white;
+  transform: scale(1);
+}
 
-      /* CodeMirror 滚动条样式 */
-      .CodeMirror-vscrollbar,
-      .CodeMirror-hscrollbar {
-        outline: none;
-      }
-
-      .CodeMirror-scrollbar-filler,
-      .CodeMirror-gutter-filler {
-        background-color: #1e293b;
-      }
-
-      /* CodeMirror 聚焦样式 */
-      .CodeMirror-focused {
-        border-color: #6366f1 !important;
-        outline: none;
-        box-shadow: 0 0 0 2px rgba(99, 102, 241, 0.2);
-      }
-
-      /* Checkbox 选中标记 - 伪元素无法用 Tailwind */
-      input[type="checkbox"].checkbox-base:checked::before {
-        content: "";
-        width: 0.65em;
-        height: 0.65em;
-        background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 16 16' fill='white' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M12.207 4.793a1 1 0 010 1.414l-5 5a1 1 0 01-1.414 0l-2-2a1 1 0 011.414-1.414L6.5 9.086l4.293-4.293a1 1 0 011.414 0z'/%3E%3C/svg%3E");
-        background-repeat: no-repeat;
-        background-position: center;
-        background-size: contain;
-        transform: scale(1);
-      }
-
-      /* Radio 选中标记 - 伪元素无法用 Tailwind */
-      input[type="radio"].checkbox-base:checked::before {
-        content: "";
-        width: 0.6em;
-        height: 0.6em;
-        border-radius: 50%;
-        background-color: white;
-        transform: scale(1);
-      }
-    </style>
-    <link
-      rel="stylesheet"
-      href="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.2/codemirror.min.css"
-    />
-    <link
-      rel="stylesheet"
-      href="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.2/theme/material-darker.min.css"
-    />
+</style>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.2/codemirror.min.css" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.2/theme/material-darker.min.css" />
   </head>
-
-  <body
-    class="font-sans leading-relaxed text-slate-400 bg-slate-950 min-h-screen p-5 selection:bg-indigo-500/30"
-  >
+  <body class="font-sans leading-relaxed text-slate-400 bg-slate-950 min-h-screen p-5 selection:bg-indigo-500/30">
     <div class="max-w-[1600px] mx-auto">
-      <div
-        class="relative overflow-hidden rounded-2xl bg-slate-900/80 border border-white/10 backdrop-blur-xl mb-8 shadow-2xl shadow-black/50"
-      >
-        <!-- 装饰光晕改淡一点 -->
-        <div
-          class="absolute top-0 left-1/4 w-32 h-32 bg-indigo-500/10 rounded-full blur-3xl"
-        ></div>
-
-        <div
-          class="relative flex flex-col md:flex-row items-center justify-between gap-4 p-6"
-        >
+      <div class="relative overflow-hidden rounded-2xl bg-slate-900/80 border border-white/10 backdrop-blur-xl mb-8 shadow-2xl shadow-black/50">
+        <div class="absolute top-0 left-1/4 w-32 h-32 bg-indigo-500/10 rounded-full blur-3xl"></div>
+        <div class="relative flex flex-col md:flex-row items-center justify-between gap-4 p-6">
           <div class="flex items-center gap-4">
-            <div
-              class="flex items-center justify-center w-12 h-12 rounded-xl bg-gradient-to-br from-indigo-500 to-purple-600 shadow-lg shadow-indigo-500/30 text-white text-2xl"
-            >
-              ⚡
-            </div>
+            <div class="flex items-center justify-center w-12 h-12 rounded-xl bg-gradient-to-br from-indigo-500 to-purple-600 shadow-lg shadow-indigo-500/30 text-white text-2xl">⚡</div>
             <div>
-              <h1
-                class="text-2xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-indigo-200 to-purple-200 tracking-wide"
-              >
-                NewAPI Mapping Generator
-              </h1>
-              <p
-                class="text-xs text-gray-400 font-medium tracking-wider uppercase mt-0.5"
-              >
-                NewAPI 模型映射生成
-              </p>
+              <h1 class="text-2xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-indigo-200 to-purple-200 tracking-wide">NewAPI Mapping Generator</h1>
+              <p class="text-xs text-gray-400 font-medium tracking-wider uppercase mt-0.5">NewAPI 模型映射生成</p>
             </div>
           </div>
-
-          <!-- 右侧功能区域 -->
           <div class="hidden md:flex items-center gap-3">
-            <!-- 自定义端点开关 -->
-            <label
-              class="flex items-center gap-2 px-3 py-1.5 rounded-full bg-black/20 border border-white/5 cursor-pointer hover:bg-black/30 transition-colors"
-            >
-              <input
-                type="checkbox"
-                id="showApiEndpoint"
-                class="checkbox-base"
-              />
+            <label class="flex items-center gap-2 px-3 py-1.5 rounded-full bg-black/20 border border-white/5 cursor-pointer hover:bg-black/30 transition-colors">
+              <input type="checkbox" id="showApiEndpoint" class="checkbox-base" />
               <span class="text-xs text-slate-300">自定义端点</span>
             </label>
-
-            <!-- 1. 保留"启用过滤"开关，方便快速切换 -->
-            <label
-              class="flex items-center gap-2 px-3 py-1.5 rounded-full bg-black/20 border border-white/5 cursor-pointer hover:bg-black/30 transition-colors"
-            >
-              <input
-                type="checkbox"
-                id="enableFilter"
-                class="checkbox-base"
-                checked
-              />
+            <label class="flex items-center gap-2 px-3 py-1.5 rounded-full bg-black/20 border border-white/5 cursor-pointer hover:bg-black/30 transition-colors">
+              <input type="checkbox" id="enableFilter" class="checkbox-base" checked />
               <span class="text-xs text-slate-300">启用过滤</span>
             </label>
-
-            <!-- 2. 新增：过滤设置按钮 (点击弹出) -->
             <div class="relative">
               <button
                 id="filterSettingsBtn"
@@ -208,73 +137,33 @@
 
       <div class="grid grid-cols-1 lg:grid-cols-[400px_1fr] gap-6 items-start">
         <div class="lg:sticky lg:top-5 flex flex-col gap-6">
-          <!-- API配置卡片 -->
-          <div
-            class="bg-slate-900/50 backdrop-blur-md rounded-xl shadow-lg p-6 transition-all duration-300 border border-white/5 hover:border-indigo-500/30 hover:shadow-xl"
-          >
-            <div
-              class="flex items-center mb-5 pb-4 border-b-2 border-slate-700/50"
-            >
+          <div class="bg-slate-900/50 backdrop-blur-md rounded-xl shadow-lg p-6 transition-all duration-300 border border-white/5 hover:border-indigo-500/30 hover:shadow-xl">
+            <div class="flex items-center mb-5 pb-4 border-b-2 border-slate-700/50">
               <h2 class="text-slate-200 text-2xl m-0">⚙️ API配置</h2>
             </div>
             <div class="mb-4">
-              <label
-                for="apiUrl"
-                class="block mb-1.5 font-semibold text-gray-300"
-                >API URL:</label
-              >
-              <input
-                type="text"
-                id="apiUrl"
-                class="input-base"
-                value="https://api.openai.com"
-              />
+              <label for="apiUrl" class="block mb-1.5 font-semibold text-gray-300">API URL:</label>
+              <input type="text" id="apiUrl" class="input-base" value="https://ollama.com" />
             </div>
             <div class="mb-4 hidden" id="apiEndpointGroup">
-              <label
-                for="apiEndpoint"
-                class="block mb-1.5 font-semibold text-gray-300"
-                >API 端点:</label
-              >
-              <input
-                type="text"
-                id="apiEndpoint"
-                class="input-base"
-                value="/v1/models"
-              />
-              <small class="text-gray-300 opacity-70 block mt-1.5"
-                >API的模型端点路径</small
-              >
+              <label for="apiEndpoint" class="block mb-1.5 font-semibold text-gray-300">API 端点:</label>
+              <input type="text" id="apiEndpoint" class="input-base" value="/v1/models" />
+              <small class="text-gray-300 opacity-70 block mt-1.5">API的模型端点路径</small>
             </div>
             <div class="mb-4">
-              <label
-                for="apiKey"
-                class="block mb-1.5 font-semibold text-gray-300"
-                >API 密钥:</label
-              >
-              <input
-                type="text"
-                id="apiKey"
-                class="input-base"
-                value="sk-123456"
-              />
+              <label for="apiKey" class="block mb-1.5 font-semibold text-gray-300">API 密钥:</label>
+              <input type="text" id="apiKey" class="input-base" value="sk-123456" />
             </div>
             <div class="text-right mt-5" id="btnGroup"></div>
           </div>
         </div>
 
         <div class="flex flex-col gap-6">
-          <div
-            class="bg-slate-900/50 backdrop-blur-md rounded-xl shadow-lg p-6 transition-all duration-300 border border-white/5 hover:border-indigo-500/30 hover:shadow-xl"
-          >
+          <div class="bg-slate-900/50 backdrop-blur-md rounded-xl shadow-lg p-6 transition-all duration-300 border border-white/5 hover:border-indigo-500/30 hover:shadow-xl">
             <div class="grid grid-cols-1 md:grid-cols-2 gap-6 min-h-[500px]">
               <div class="flex flex-col overflow-hidden">
-                <div
-                  class="flex justify-between items-center mb-2.5 p-3 bg-slate-800 rounded-lg border-l-4 border-primary"
-                >
-                  <h3 class="m-0 text-slate-200 font-semibold flex-1 text-xl">
-                    源模型列表
-                  </h3>
+                <div class="flex justify-between items-center mb-2.5 p-3 bg-slate-800 rounded-lg border-l-4 border-primary">
+                  <h3 class="m-0 text-slate-200 font-semibold flex-1 text-xl">源模型列表</h3>
                   <button
                     id="copyToFinalBtn"
                     class="p-1.5 px-3 text-xs rounded-lg bg-success text-white border-none cursor-pointer inline-flex items-center gap-1 transition-all duration-300 hover:opacity-90 hover:-translate-y-0.5"
@@ -284,26 +173,15 @@
                   </button>
                 </div>
                 <div class="flex-1 flex flex-col overflow-hidden">
-                  <textarea
-                    id="allModels"
-                    placeholder="从API获取的原始模型将显示在此，每行一个。"
-                  ></textarea>
+                  <textarea id="allModels" placeholder="从API获取的原始模型将显示在此，每行一个。"></textarea>
                 </div>
               </div>
-
               <div class="flex flex-col overflow-hidden">
-                <div
-                  class="flex justify-between items-center mb-2.5 p-3 bg-slate-800 rounded-lg border-l-4 border-primary"
-                >
-                  <h3 class="m-0 text-slate-200 font-semibold flex-1 text-xl">
-                    最终模型列表
-                  </h3>
+                <div class="flex justify-between items-center mb-2.5 p-3 bg-slate-800 rounded-lg border-l-4 border-primary">
+                  <h3 class="m-0 text-slate-200 font-semibold flex-1 text-xl">最终模型列表</h3>
                 </div>
                 <div class="flex-1 flex flex-col overflow-hidden">
-                  <textarea
-                    id="finalModels"
-                    placeholder="过滤或编辑后的最终模型将显示在此，每行一个。"
-                  ></textarea>
+                  <textarea id="finalModels" placeholder="过滤或编辑后的最终模型将显示在此，每行一个。"></textarea>
                 </div>
               </div>
             </div>
@@ -311,66 +189,36 @@
         </div>
       </div>
 
-      <!-- 弹出层 (默认隐藏) - 移至 body 直接子级以避免遮挡 -->
-      <div
-        id="filterPopover"
-        class="hidden fixed z-[100] w-96 bg-slate-900 border border-slate-700 rounded-xl shadow-2xl p-4 transform origin-top-right transition-all"
-      >
-        <!-- 过滤模式 -->
+      <div id="filterPopover" class="hidden fixed z-[100] w-96 bg-slate-900 border border-slate-700 rounded-xl shadow-2xl p-4 transform origin-top-right transition-all">
         <div class="mb-4">
           <label class="block text-xs text-slate-400 mb-2">过滤模式</label>
           <div class="flex gap-3">
             <label class="cursor-pointer flex items-center gap-1.5">
-              <input
-                type="radio"
-                name="filterMode"
-                value="exclude"
-                class="checkbox-base radio-base"
-                checked
-              />
+              <input type="radio" name="filterMode" value="exclude" class="checkbox-base radio-base" checked />
               <span class="text-xs text-slate-300">排除</span>
             </label>
             <label class="cursor-pointer flex items-center gap-1.5">
-              <input
-                type="radio"
-                name="filterMode"
-                value="include"
-                class="checkbox-base radio-base"
-              />
+              <input type="radio" name="filterMode" value="include" class="checkbox-base radio-base" />
               <span class="text-xs text-slate-300">保留</span>
             </label>
           </div>
         </div>
-
-        <!-- 排除关键词输入 -->
         <div class="mb-4">
-          <label
-            for="excludeKeywords"
-            class="block text-xs text-slate-400 mb-1.5"
-            >排除关键词 (逗号分隔)</label
-          >
+          <label for="excludeKeywords" class="block text-xs text-slate-400 mb-1.5">排除关键词 (逗号分隔)</label>
           <textarea
             id="excludeKeywords"
             rows="3"
             class="w-full bg-slate-950 border border-slate-700 rounded-lg p-2 text-xs text-slate-300 focus:border-indigo-500 focus:outline-none resize-y font-mono"
-            placeholder="例如: 7b, 14b, bge..."
           >
 distill,bge,embedding,evil,flux,live,qvq,qwq,audio,tts,veo,gemma,gemini-1.5,gemini-2.0,writer,baichuan,phi</textarea
           >
         </div>
-
-        <!-- 保留关键词输入 -->
         <div>
-          <label
-            for="includeKeywords"
-            class="block text-xs text-slate-400 mb-1.5"
-            >保留关键词 (逗号分隔)</label
-          >
+          <label for="includeKeywords" class="block text-xs text-slate-400 mb-1.5">保留关键词 (逗号分隔)</label>
           <textarea
             id="includeKeywords"
             rows="3"
             class="w-full bg-slate-950 border border-slate-700 rounded-lg p-2 text-xs text-slate-300 focus:border-indigo-500 focus:outline-none resize-y font-mono"
-            placeholder="例如: gpt, gemini, claude..."
           >
 gpt,gemini,claude,grok,deepseek,glm,minimax,kimi,doubao,qwen</textarea
           >
@@ -382,391 +230,323 @@ gpt,gemini,claude,grok,deepseek,glm,minimax,kimi,doubao,qwen</textarea
 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.2/codemirror.min.js"></script>
     <script>
-      // DOM 元素查询辅助函数
-      const $ = (id) => document.getElementById(id);
+// 配置常量
+const STORAGE_PREFIX = 'modelGet_';
 
-      // 页面元素
-      const statusContainer = $("statusContainer");
-      const apiUrlInput = $("apiUrl");
-      const apiKeyInput = $("apiKey");
-      const enableFilterInput = $("enableFilter");
-      const excludeKeywordsInput = $("excludeKeywords");
-      const includeKeywordsInput = $("includeKeywords");
-      const apiEndpointInput = $("apiEndpoint");
-      const showApiEndpointInput = $("showApiEndpoint");
-      const apiEndpointGroup = $("apiEndpointGroup");
+const DEFAULT_CONFIG = {
+  apiUrl: 'https://ollama.com',
+  apiEndpoint: '/v1/models',
+  apiKey: 'sk-123456',
+  excludeKeywords: 'distill,bge,embedding,evil,flux,live,qvq,qwq,audio,tts,veo,gemma,gemini-1.5,gemini-2.0,writer,baichuan,phi',
+  includeKeywords: 'gpt,gemini,claude,grok,deepseek,glm,minimax,kimi,doubao,qwen',
+};
 
-      // localStorage 工具
-      const STORAGE_PREFIX = "modelGet_";
-      const getStorage = (key, def) =>
-        localStorage.getItem(STORAGE_PREFIX + key) ?? def;
-      const setStorage = (key, val) =>
-        localStorage.setItem(STORAGE_PREFIX + key, val);
+const CONFIG_FIELDS = {
+  ApiUrl: { el: 'apiUrl', def: DEFAULT_CONFIG.apiUrl },
+  ApiEndpoint: { el: 'apiEndpoint', def: DEFAULT_CONFIG.apiEndpoint },
+  ApiKey: { el: 'apiKey', def: DEFAULT_CONFIG.apiKey },
+  ExcludeKeywords: { el: 'excludeKeywords', def: DEFAULT_CONFIG.excludeKeywords },
+  IncludeKeywords: { el: 'includeKeywords', def: DEFAULT_CONFIG.includeKeywords },
+  EnableFilter: { el: 'enableFilter', type: 'checkbox', def: true },
+  ShowApiEndpoint: { el: 'showApiEndpoint', type: 'checkbox', def: false },
+  FilterMode: { type: 'radio', name: 'filterMode', def: 'exclude' },
+};
 
-      // 1. 合并配置字段定义，避免重复
-      const CONFIG_FIELDS = {
-        ApiUrl: { el: () => apiUrlInput, def: "https://api.openai.com" },
-        ApiEndpoint: { el: () => apiEndpointInput, def: "/v1/models" },
-        ApiKey: { el: () => apiKeyInput, def: "sk-123456" },
-        ExcludeKeywords: {
-          el: () => excludeKeywordsInput,
-          def: "distill,bge,embedding,evil,flux,live,qvq,qwq,audio,tts,veo,gemma,gemini-1.5,gemini-2.0,writer,baichuan,phi",
-        },
-        IncludeKeywords: {
-          el: () => includeKeywordsInput,
-          def: "gpt,gemini,claude,grok,deepseek,glm,minimax,kimi,doubao,qwen",
-        },
-        EnableFilter: {
-          el: () => enableFilterInput,
-          type: "checkbox",
-          def: true,
-        },
-        ShowApiEndpoint: {
-          el: () => showApiEndpointInput,
-          type: "checkbox",
-          def: false,
-        },
-        FilterMode: { type: "radio", name: "filterMode", def: "exclude" },
-      };
+const STATUS_COLORS = {
+  success: 'bg-green-500/90 text-white',
+  error: 'bg-red-500/90 text-white',
+  info: 'bg-indigo-500/90 text-white',
+  warning: 'bg-yellow-500/90 text-white',
+};
 
-      // 工具函数：解析模型列表
-      const parseModels = (text) =>
-        (text || "")
-          .split("\n")
-          .map((s) => s.trim())
-          .filter(Boolean);
+const BTN_CONFIG = [
+  {
+    id: 'fetchBtn',
+    icon: '🔄',
+    text: '获取模型列表',
+    cls: 'bg-indigo-600 hover:bg-indigo-700',
+    fn: 'fetchModels',
+  },
+  {
+    id: 'copyFinalBtn',
+    icon: '📋',
+    text: '复制最终模型',
+    cls: 'bg-emerald-600 hover:bg-emerald-700',
+    fn: 'copyFinalModels',
+  },
+  {
+    id: 'copyMappingBtn',
+    icon: '⚡',
+    text: '复制模型映射',
+    cls: 'bg-cyan-600 hover:bg-cyan-700',
+    fn: 'copyMappingResult',
+  },
+  {
+    id: 'clearBtn',
+    icon: '🗑️',
+    text: '清空模型列表',
+    cls: 'bg-violet-600 hover:bg-violet-700',
+    fn: 'clearEditor',
+  },
+  {
+    id: 'clearConfigBtn',
+    icon: '🧹',
+    text: '清除API配置',
+    cls: 'bg-red-600 hover:bg-red-700',
+    fn: 'clearApiConfig',
+  },
+];
 
-      // 工具函数：切换 hidden 类
-      const toggleHidden = (el, hide) => el.classList.toggle("hidden", hide);
+// 工具函数
+const $ = (id) => document.getElementById(id);
+const getStorage = (k, d) => localStorage.getItem(STORAGE_PREFIX + k) ?? d;
+const setStorage = (k, v) => localStorage.setItem(STORAGE_PREFIX + k, v);
+const parseModels = (t) =>
+  (t || '')
+    .split('\n')
+    .map((s) => s.trim())
+    .filter(Boolean);
+const toggleHidden = (el, hide) => {
+  if (el) el.classList.toggle('hidden', hide);
+};
 
-      // 工具函数：fetch JSON 响应
-      async function fetchJson(url, options = {}) {
-        const response = await fetch(url, {
-          ...options,
-          headers: { "Content-Type": "application/json", ...options.headers },
-        });
-        if (!response.headers.get("content-type")?.includes("json")) {
-          throw new Error("服务器返回非JSON响应");
-        }
-        const data = await response.json();
-        if (!response.ok) throw new Error(data.error || "请求失败");
-        return data;
-      }
+async function fetchJson(url, options = {}) {
+  const res = await fetch(url, {
+    ...options,
+    headers: { 'Content-Type': 'application/json', ...options.headers },
+  });
+  if (!res.headers.get('content-type')?.includes('json')) {
+    throw new Error('服务器返回非JSON响应');
+  }
+  if (!res.ok) {
+    let msg = '请求失败';
+    try {
+      msg = (await res.json()).error || msg;
+    } catch {}
+    throw new Error(msg);
+  }
+  return res.json();
+}
 
-      // CodeMirror 编辑器实例
-      let allModelsEditor, finalModelsEditor;
+async function copyToClipboard(text, msg) {
+  if (!text) {
+    showStatus('⚠️ 没有可复制的内容', 'warning');
+    return;
+  }
+  try {
+    await navigator.clipboard.writeText(text);
+    showStatus(msg, 'success');
+  } catch (e) {
+    showStatus('❌ 复制失败: ' + e.message, 'error');
+  }
+}
 
-      // 初始化 CodeMirror 编辑器
-      function initEditors() {
-        const config = {
-          mode: "text/plain",
-          theme: "material-darker",
-          lineNumbers: true,
-          lineWrapping: true,
-          viewportMargin: Infinity,
-        };
-        allModelsEditor = CodeMirror.fromTextArea($("allModels"), config);
-        finalModelsEditor = CodeMirror.fromTextArea($("finalModels"), config);
-      }
+function getConfig() {
+  const radio = document.querySelector('input[name="filterMode"]:checked');
+  return {
+    apiUrl: $('apiUrl').value,
+    apiEndpoint: $('apiEndpoint').value,
+    apiKey: $('apiKey').value,
+    enableFilter: $('enableFilter').checked,
+    excludeKeywords: $('excludeKeywords').value,
+    includeKeywords: $('includeKeywords').value,
+    filterMode: radio ? radio.value : 'exclude',
+  };
+}
 
-      // 显示状态信息
-      function showStatus(message, type) {
-        const colors = {
-          success: "bg-green-500/90 text-white",
-          error: "bg-red-500/90 text-white",
-          info: "bg-indigo-500/90 text-white",
-          warning: "bg-yellow-500/90 text-white",
-        };
-        const div = document.createElement("div");
-        div.className = `fixed bottom-5 left-1/2 -translate-x-1/2 px-6 py-3 rounded-lg font-medium shadow-lg backdrop-blur-sm transition-all duration-300 transform translate-y-10 opacity-0 z-[1000] ${colors[type] || colors.info}`;
-        div.textContent = message;
-        $("statusContainer").innerHTML = "";
-        $("statusContainer").appendChild(div);
+// 编辑器操作
+let allModelsEditor, finalModelsEditor;
 
-        requestAnimationFrame(() => {
-          div.classList.remove("translate-y-10", "opacity-0");
-        });
+function initEditors() {
+  const cfg = {
+    mode: 'text/plain',
+    theme: 'material-darker',
+    lineNumbers: true,
+    lineWrapping: true,
+    viewportMargin: Infinity,
+  };
+  allModelsEditor = CodeMirror.fromTextArea($('allModels'), cfg);
+  finalModelsEditor = CodeMirror.fromTextArea($('finalModels'), cfg);
+}
 
-        setTimeout(() => {
-          div.classList.add("translate-y-10", "opacity-0");
-          setTimeout(() => div.remove(), 300);
-        }, 3000);
-      }
+function getEditorValues() {
+  return {
+    allModels: allModelsEditor.getValue(),
+    finalModels: finalModelsEditor.getValue(),
+  };
+}
 
-      // 获取配置参数
-      function getConfig() {
-        const filterModeRadio = document.querySelector(
-          'input[name="filterMode"]:checked',
-        );
-        const filterMode = filterModeRadio ? filterModeRadio.value : "exclude";
-        return {
-          apiUrl: apiUrlInput.value,
-          apiEndpoint: apiEndpointInput.value,
-          apiKey: apiKeyInput.value,
-          enableFilter: enableFilterInput.checked,
-          excludeKeywords: excludeKeywordsInput.value,
-          includeKeywords: includeKeywordsInput.value,
-          filterMode: filterMode,
-        };
-      }
+function setEditorValues(a, f) {
+  allModelsEditor.setValue(a);
+  finalModelsEditor.setValue(f);
+}
 
-      // 2. 简化 saveConfig/loadConfig，并增加安全性
-      function saveConfig() {
-        Object.entries(CONFIG_FIELDS).forEach(([k, v]) => {
-          if (v.type === "checkbox") {
-            const el = v.el();
-            if (el) setStorage(k, el.checked);
-          } else if (v.type === "radio") {
-            const checked = document.querySelector(
-              `input[name="${v.name}"]:checked`,
-            );
-            setStorage(k, checked ? checked.value : v.def);
-          } else {
-            const el = v.el();
-            if (el) setStorage(k, el.value);
-          }
-        });
-      }
+function clearEditors() {
+  allModelsEditor.setValue('');
+  finalModelsEditor.setValue('');
+}
 
-      // 从localStorage加载配置
-      function loadConfig() {
-        Object.entries(CONFIG_FIELDS).forEach(([k, v]) => {
-          const stored = getStorage(k, v.def);
-          if (v.type === "checkbox") {
-            const el = v.el();
-            if (el) el.checked = stored === "true" || stored === true;
-          } else if (v.type === "radio") {
-            const radio = document.querySelector(
-              `input[name="${v.name}"][value="${stored}"]`,
-            );
-            if (radio) radio.checked = true;
-          } else {
-            const el = v.el();
-            if (el) el.value = stored;
-          }
-        });
+function copyToFinalModels() {
+  finalModelsEditor.setValue(allModelsEditor.getValue());
+  showStatus('✅ 源模型已复制到最终模型列表', 'success');
+}
 
-        toggleHidden(apiEndpointGroup, !showApiEndpointInput.checked);
-      }
+function clearEditor() {
+  clearEditors();
+  showStatus('✅ 模型列表已清空', 'success');
+}
 
-      // 清除API配置（不包括过滤关键词）
-      function clearApiConfig() {
-        apiUrlInput.value = "https://api.openai.com";
-        apiEndpointInput.value = "/v1/models";
-        apiKeyInput.value = "sk-123456";
-        // 显式保存默认值，确保逻辑闭环
-        saveConfig();
-        showStatus("✅ 配置已还原", "success");
-      }
+// 存储管理
+function saveConfig() {
+  Object.entries(CONFIG_FIELDS).forEach(([k, v]) => {
+    if (v.type === 'checkbox') {
+      const el = $(v.el);
+      if (el) setStorage(k, el.checked);
+    } else if (v.type === 'radio') {
+      const c = document.querySelector(`input[name="${v.name}"]:checked`);
+      setStorage(k, c ? c.value : v.def);
+    } else {
+      const el = $(v.el);
+      if (el) setStorage(k, el.value);
+    }
+  });
+}
 
-      // 获取模型列表
-      async function fetchModels() {
-        try {
-          showStatus("正在获取模型列表...", "info");
-          const {
-            allModels = [],
-            filteredModels = [],
-            totalCount = 0,
-            filteredCount = 0,
-          } = await fetchJson("/fetch", {
-            method: "POST",
-            body: JSON.stringify(getConfig()),
-          });
-          allModelsEditor.setValue(allModels.join("\n"));
-          finalModelsEditor.setValue(filteredModels.join("\n"));
+function loadConfig() {
+  Object.entries(CONFIG_FIELDS).forEach(([k, v]) => {
+    const s = getStorage(k, v.def);
+    if (v.type === 'checkbox') {
+      const el = $(v.el);
+      if (el) el.checked = s === 'true' || s === true;
+    } else if (v.type === 'radio') {
+      const r = document.querySelector(`input[name="${v.name}"][value="${s}"]`);
+      if (r) r.checked = true;
+    } else {
+      const el = $(v.el);
+      if (el) el.value = s;
+    }
+  });
+  toggleHidden($('apiEndpointGroup'), !$('showApiEndpoint').checked);
+}
 
-          if (enableFilterInput.checked) {
-            showStatus(
-              `✅ 成功获取 ${totalCount} 个模型，过滤后剩余 ${filteredCount} 个`,
-              "success",
-            );
-          } else {
-            showStatus(`✅ 成功获取 ${totalCount} 个模型`, "success");
-          }
-        } catch (error) {
-          showStatus("❌ 获取失败: " + error.message, "error");
-        }
-      }
+function clearApiConfig() {
+  $('apiUrl').value = DEFAULT_CONFIG.apiUrl;
+  $('apiEndpoint').value = DEFAULT_CONFIG.apiEndpoint;
+  $('apiKey').value = DEFAULT_CONFIG.apiKey;
+  saveConfig();
+  showStatus('✅ 配置已还原', 'success');
+}
 
-      // 生成映射
-      async function generateMapping() {
-        const allModelsList = parseModels(allModelsEditor.getValue());
-        const finalModelsList = parseModels(finalModelsEditor.getValue());
+// API 操作
+async function fetchModels() {
+  try {
+    showStatus('正在获取模型列表...', 'info');
+    const cfg = getConfig();
+    const r = await fetchJson('/fetch', {
+      method: 'POST',
+      body: JSON.stringify(cfg),
+    });
+    const { allModels = [], filteredModels = [], totalCount = 0, filteredCount = 0 } = r;
+    setEditorValues(allModels.join('\n'), filteredModels.join('\n'));
+    showStatus(cfg.enableFilter ? `✅ 成功获取 ${totalCount} 个模型，过滤后剩余 ${filteredCount} 个` : `✅ 成功获取 ${totalCount} 个模型`, 'success');
+  } catch (e) {
+    showStatus('❌ 获取失败: ' + e.message, 'error');
+  }
+}
 
-        const { mapping } = await fetchJson("/generate-mapping", {
-          method: "POST",
-          body: JSON.stringify({
-            allModels: allModelsList,
-            finalModels: finalModelsList,
-          }),
-        });
-        return mapping;
-      }
+async function generateMapping() {
+  const { allModels, finalModels } = getEditorValues();
+  const { mapping } = await fetchJson('/generate-mapping', {
+    method: 'POST',
+    body: JSON.stringify({
+      allModels: parseModels(allModels),
+      finalModels: parseModels(finalModels),
+    }),
+  });
+  return mapping;
+}
 
-      async function copyToClipboard(text, successMsg) {
-        if (!text) {
-          showStatus("⚠️ 没有可复制的内容", "warning");
-          return;
-        }
-        try {
-          await navigator.clipboard.writeText(text);
-          showStatus(successMsg, "success");
-        } catch (err) {
-          showStatus("❌ 复制失败: " + err.message, "error");
-        }
-      }
+async function copyFinalModels() {
+  await copyToClipboard(parseModels(getEditorValues().finalModels).join(', '), '✅ 最终模型已复制到剪贴板');
+}
 
-      async function copyFinalModels() {
-        await copyToClipboard(
-          parseModels(finalModelsEditor.getValue()).join(", "),
-          "✅ 最终模型已复制到剪贴板",
-        );
-      }
+async function copyMappingResult() {
+  try {
+    const mapping = await generateMapping();
+    if (!Object.keys(mapping).length) {
+      showStatus('⚠️ 映射前后无变化', 'warning');
+      return;
+    }
+    await copyToClipboard(JSON.stringify(mapping, null, 2), '✅ 模型映射已复制到剪贴板');
+  } catch (e) {
+    showStatus('❌ 生成映射失败: ' + e.message, 'error');
+  }
+}
 
-      async function copyMappingResult() {
-        try {
-          const mapping = await generateMapping();
-          if (!Object.keys(mapping).length) {
-            showStatus("⚠️ 映射前后无变化", "warning");
-            return;
-          }
-          await copyToClipboard(
-            JSON.stringify(mapping, null, 2),
-            "✅ 模型映射已复制到剪贴板",
-          );
-        } catch (error) {
-          showStatus("❌ 生成映射失败: " + error.message, "error");
-        }
-      }
+// UI 交互
+function showStatus(msg, type) {
+  const div = document.createElement('div');
+  div.className = `fixed bottom-5 left-1/2 -translate-x-1/2 px-6 py-3 rounded-lg font-medium shadow-lg backdrop-blur-sm transition-all duration-300 transform translate-y-10 opacity-0 z-[1000] ${STATUS_COLORS[type] || STATUS_COLORS.info}`;
+  div.textContent = msg;
+  $('statusContainer').innerHTML = '';
+  $('statusContainer').appendChild(div);
+  requestAnimationFrame(() => div.classList.remove('translate-y-10', 'opacity-0'));
+  setTimeout(() => {
+    div.classList.add('translate-y-10', 'opacity-0');
+    setTimeout(() => div.remove(), 300);
+  }, 3000);
+}
 
-      // 清空模型列表
-      function clearEditor() {
-        allModelsEditor.setValue("");
-        finalModelsEditor.setValue("");
-        showStatus("✅ 模型列表已清空", "success");
-      }
+function initPopover() {
+  const btn = $('filterSettingsBtn'),
+    pop = $('filterPopover');
+  btn.addEventListener('click', (e) => {
+    e.stopPropagation();
+    if (pop.classList.contains('hidden')) {
+      const r = btn.getBoundingClientRect();
+      pop.style.top = `${r.bottom + 8}px`;
+      pop.style.left = 'auto';
+      pop.style.right = `${window.innerWidth - r.right}px`;
+      pop.classList.remove('hidden');
+    } else {
+      pop.classList.add('hidden');
+    }
+  });
+  document.addEventListener('click', (e) => {
+    if (!pop.contains(e.target) && e.target !== btn) pop.classList.add('hidden');
+  });
+  pop.addEventListener('click', (e) => e.stopPropagation());
+}
 
-      // 将源模型列表复制到最终模型列表
-      function copyToFinalModels() {
-        const allModelsValue = allModelsEditor.getValue();
-        finalModelsEditor.setValue(allModelsValue);
-        showStatus("✅ 源模型已复制到最终模型列表", "success");
-      }
+function initButtons() {
+  $('btnGroup').innerHTML = BTN_CONFIG.map(({ id, icon, text, cls }) => `<button id="${id}" class="btn-base ${cls} text-white"><span class="mr-2">${icon}</span><span>${text}</span></button>`).join(
+    '',
+  );
+  const fnMap = { fetchModels, copyFinalModels, copyMappingResult, clearEditor, clearApiConfig };
+  BTN_CONFIG.forEach(({ id, fn }) => $(id).addEventListener('click', fnMap[fn]));
+  $('copyToFinalBtn').addEventListener('click', copyToFinalModels);
+}
 
-      // 统一事件监听管理
-      document.addEventListener("DOMContentLoaded", function () {
-        initEditors();
-        loadConfig();
+function initEventListeners() {
+  $('showApiEndpoint').addEventListener('change', function () {
+    toggleHidden($('apiEndpointGroup'), !this.checked);
+    if (!this.checked) $('apiEndpoint').value = '/v1/models';
+    saveConfig();
+  });
+  ['apiUrl', 'apiKey', 'apiEndpoint', 'excludeKeywords', 'includeKeywords'].forEach((id) => $(id).addEventListener('blur', saveConfig));
+  $('enableFilter').addEventListener('change', saveConfig);
+  document.querySelectorAll('input[name="filterMode"]').forEach((r) => r.addEventListener('change', saveConfig));
+}
 
-        // --- 新增：弹出层交互逻辑 (修复遮挡问题) ---
-        const filterBtn = $("filterSettingsBtn");
-        const filterPopover = $("filterPopover");
+// 主入口
+document.addEventListener('DOMContentLoaded', function () {
+  initEditors();
+  loadConfig();
+  initPopover();
+  initButtons();
+  initEventListeners();
+});
 
-        // 切换显示并定位
-        filterBtn.addEventListener("click", (e) => {
-          e.stopPropagation();
-          const isHidden = filterPopover.classList.contains("hidden");
-
-          if (isHidden) {
-            const rect = filterBtn.getBoundingClientRect();
-            // 简化定位：top 为按钮下方，right 为 0 (相对于按钮右侧)
-            // 这里使用 fixed 定位，直接计算绝对位置
-            filterPopover.style.top = `${rect.bottom + 8}px`;
-            filterPopover.style.left = "auto";
-            // 计算右边缘距离
-            filterPopover.style.right = `${window.innerWidth - rect.right}px`;
-            filterPopover.classList.remove("hidden");
-          } else {
-            filterPopover.classList.add("hidden");
-          }
-        });
-
-        // 点击页面其他地方关闭
-        document.addEventListener("click", (e) => {
-          if (!filterPopover.contains(e.target) && e.target !== filterBtn) {
-            filterPopover.classList.add("hidden");
-          }
-        });
-
-        // 阻止点击弹出层内部时关闭
-        filterPopover.addEventListener("click", (e) => {
-          e.stopPropagation();
-        });
-        // --- 结束新增 ---
-
-        // 3. 事件绑定简化 - 用对象映射
-        const btnActions = {
-          fetchBtn: fetchModels,
-          copyFinalBtn: copyFinalModels,
-          copyMappingBtn: copyMappingResult,
-          clearBtn: clearEditor,
-          clearConfigBtn: clearApiConfig,
-          copyToFinalBtn: copyToFinalModels,
-        };
-
-        // 动态生成按钮组
-        const BTN_CONFIG = [
-          [
-            "fetchBtn",
-            "🔄",
-            "获取模型列表",
-            "bg-indigo-600 text-white hover:bg-indigo-700",
-          ],
-          [
-            "copyFinalBtn",
-            "📋",
-            "复制最终模型",
-            "bg-emerald-600 text-white hover:bg-emerald-700",
-          ],
-          [
-            "copyMappingBtn",
-            "⚡",
-            "复制模型映射",
-            "bg-cyan-600 text-white hover:bg-cyan-700",
-          ],
-          [
-            "clearBtn",
-            "🗑️",
-            "清空模型列表",
-            "bg-violet-600 text-white hover:bg-violet-700",
-          ],
-          [
-            "clearConfigBtn",
-            "🧹",
-            "清除API配置",
-            "bg-red-600 text-white hover:bg-red-700",
-          ],
-        ];
-        $("btnGroup").innerHTML = BTN_CONFIG.map(
-          ([id, icon, text, cls]) =>
-            `<button id="${id}" class="btn-base ${cls}"><span class="mr-2">${icon}</span><span>${text}</span></button>`,
-        ).join("");
-
-        Object.entries(btnActions).forEach(([id, fn]) =>
-          $(id).addEventListener("click", fn),
-        );
-
-        showApiEndpointInput.addEventListener("change", function () {
-          toggleHidden(apiEndpointGroup, !this.checked);
-          if (!this.checked) apiEndpointInput.value = "/v1/models";
-          saveConfig();
-        });
-        [
-          apiUrlInput,
-          apiKeyInput,
-          apiEndpointInput,
-          excludeKeywordsInput,
-          includeKeywordsInput,
-        ].forEach((el) => {
-          el.addEventListener("blur", saveConfig);
-        });
-        enableFilterInput.addEventListener("change", saveConfig);
-        document
-          .querySelectorAll('input[name="filterMode"]')
-          .forEach((radio) => {
-            radio.addEventListener("change", saveConfig);
-          });
-      });
-    </script>
+</script>
   </body>
 </html>

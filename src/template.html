@@ -1,0 +1,195 @@
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>NewAPI Mapping Generator</title>
+    <link rel="icon" type="image/png" href="https://img.icons8.com/?size=100&id=POBc2SrrhhnF&format=png&color=000000" />
+    <link href="https://cdn.jsdelivr.net/npm/lxgw-wenkai-screen-web@1.521.0/style.min.css" rel="stylesheet" />
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+      tailwind.config = {
+        theme: {
+          extend: {
+            colors: {
+              primary: '#4f46e5',
+              'primary-hover': '#4338ca',
+              success: '#10b981',
+              warning: '#f59e0b',
+              danger: '#ef4444',
+              bg: '#0f172a',
+              card: '#1e293b',
+            },
+            fontFamily: { sans: ['"LXGW WenKai Screen"', 'sans-serif'] },
+          },
+        },
+      };
+    </script>
+    <!-- css-lint-disable unknownAtRules -->
+    <style type="text/tailwindcss">
+      @layer utilities {
+        .btn-base {
+          @apply border-none p-2.5 rounded-lg cursor-pointer text-[15px] font-semibold transition-all duration-300 inline-flex items-center justify-center shadow-lg shadow-indigo-500/20 w-full mb-2.5;
+        }
+        .btn-base:hover {
+          @apply -translate-y-0.5 shadow-xl shadow-indigo-500/40;
+        }
+        .input-base {
+          @apply w-full p-2.5 border border-slate-700 rounded-lg text-sm transition-all duration-300 bg-transparent text-slate-200 focus:border-indigo-500 focus:ring-1 focus:ring-indigo-500 focus:outline-none;
+        }
+        .checkbox-base {
+          @apply appearance-none bg-slate-900 m-0 text-current w-[1.25em] h-[1.25em] border-2 border-slate-600 rounded-[0.35em] grid place-content-center cursor-pointer transition-all duration-200 ease-[cubic-bezier(0.4,0,0.2,1)] relative;
+        }
+        .checkbox-base:hover {
+          @apply border-indigo-500 shadow-[0_0_0_3px_rgba(99,102,241,0.1)];
+        }
+        .checkbox-base:checked {
+          @apply bg-gradient-to-br from-indigo-500 to-indigo-600 border-indigo-500 shadow-[0_0_0_3px_rgba(99,102,241,0.2)];
+        }
+        .radio-base {
+          @apply rounded-full;
+        }
+      }
+    </style>
+    <!-- css-lint-enable unknownAtRules -->
+    {{STYLE_CSS}}
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.2/codemirror.min.css" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.2/theme/material-darker.min.css" />
+  </head>
+  <body class="font-sans leading-relaxed text-slate-400 bg-slate-950 min-h-screen p-5 selection:bg-indigo-500/30">
+    <div class="max-w-[1600px] mx-auto">
+      <div class="relative overflow-hidden rounded-2xl bg-slate-900/80 border border-white/10 backdrop-blur-xl mb-8 shadow-2xl shadow-black/50">
+        <div class="absolute top-0 left-1/4 w-32 h-32 bg-indigo-500/10 rounded-full blur-3xl"></div>
+        <div class="relative flex flex-col md:flex-row items-center justify-between gap-4 p-6">
+          <div class="flex items-center gap-4">
+            <div class="flex items-center justify-center w-12 h-12 rounded-xl bg-gradient-to-br from-indigo-500 to-purple-600 shadow-lg shadow-indigo-500/30 text-white text-2xl">⚡</div>
+            <div>
+              <h1 class="text-2xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-indigo-200 to-purple-200 tracking-wide">NewAPI Mapping Generator</h1>
+              <p class="text-xs text-gray-400 font-medium tracking-wider uppercase mt-0.5">NewAPI 模型映射生成</p>
+            </div>
+          </div>
+          <div class="hidden md:flex items-center gap-3">
+            <label class="flex items-center gap-2 px-3 py-1.5 rounded-full bg-black/20 border border-white/5 cursor-pointer hover:bg-black/30 transition-colors">
+              <input type="checkbox" id="showApiEndpoint" class="checkbox-base" />
+              <span class="text-xs text-slate-300">自定义端点</span>
+            </label>
+            <label class="flex items-center gap-2 px-3 py-1.5 rounded-full bg-black/20 border border-white/5 cursor-pointer hover:bg-black/30 transition-colors">
+              <input type="checkbox" id="enableFilter" class="checkbox-base" checked />
+              <span class="text-xs text-slate-300">启用过滤</span>
+            </label>
+            <div class="relative">
+              <button
+                id="filterSettingsBtn"
+                class="flex items-center gap-2 px-3 py-1.5 rounded-full bg-indigo-500/10 border border-indigo-500/30 text-indigo-300 hover:bg-indigo-500/20 transition-colors"
+              >
+                <span>⚙️</span>
+                <span class="text-xs font-medium">过滤设置</span>
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="grid grid-cols-1 lg:grid-cols-[400px_1fr] gap-6 items-start">
+        <div class="lg:sticky lg:top-5 flex flex-col gap-6">
+          <div class="bg-slate-900/50 backdrop-blur-md rounded-xl shadow-lg p-6 transition-all duration-300 border border-white/5 hover:border-indigo-500/30 hover:shadow-xl">
+            <div class="flex items-center mb-5 pb-4 border-b-2 border-slate-700/50">
+              <h2 class="text-slate-200 text-2xl m-0">⚙️ API配置</h2>
+            </div>
+            <div class="mb-4">
+              <label for="apiUrl" class="block mb-1.5 font-semibold text-gray-300">API URL:</label>
+              <input type="text" id="apiUrl" class="input-base" value="https://ollama.com" />
+            </div>
+            <div class="mb-4 hidden" id="apiEndpointGroup">
+              <label for="apiEndpoint" class="block mb-1.5 font-semibold text-gray-300">API 端点:</label>
+              <input type="text" id="apiEndpoint" class="input-base" value="/v1/models" />
+              <small class="text-gray-300 opacity-70 block mt-1.5">API的模型端点路径</small>
+            </div>
+            <div class="mb-4">
+              <label for="apiKey" class="block mb-1.5 font-semibold text-gray-300">API 密钥:</label>
+              <input type="text" id="apiKey" class="input-base" value="sk-123456" />
+            </div>
+            <div class="text-right mt-5" id="btnGroup"></div>
+          </div>
+        </div>
+
+        <div class="flex flex-col gap-6">
+          <div class="bg-slate-900/50 backdrop-blur-md rounded-xl shadow-lg p-6 transition-all duration-300 border border-white/5 hover:border-indigo-500/30 hover:shadow-xl">
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6 min-h-[500px]">
+              <div class="flex flex-col overflow-hidden">
+                <div class="flex justify-between items-center mb-2.5 p-3 bg-slate-800 rounded-lg border-l-4 border-primary">
+                  <h3 class="m-0 text-slate-200 font-semibold flex-1 text-xl">源模型列表</h3>
+                  <button
+                    id="copyToFinalBtn"
+                    class="p-1.5 px-3 text-xs rounded-lg bg-success text-white border-none cursor-pointer inline-flex items-center gap-1 transition-all duration-300 hover:opacity-90 hover:-translate-y-0.5"
+                  >
+                    <span class="mr-2">➡️</span>
+                    <span>复制</span>
+                  </button>
+                </div>
+                <div class="flex-1 flex flex-col overflow-hidden">
+                  <textarea id="allModels" placeholder="从API获取的原始模型将显示在此，每行一个。"></textarea>
+                </div>
+              </div>
+              <div class="flex flex-col overflow-hidden">
+                <div class="flex justify-between items-center mb-2.5 p-3 bg-slate-800 rounded-lg border-l-4 border-primary">
+                  <h3 class="m-0 text-slate-200 font-semibold flex-1 text-xl">最终模型列表</h3>
+                </div>
+                <div class="flex-1 flex flex-col overflow-hidden">
+                  <textarea id="finalModels" placeholder="过滤或编辑后的最终模型将显示在此，每行一个。"></textarea>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div id="filterPopover" class="hidden fixed z-[100] w-96 bg-slate-900 border border-slate-700 rounded-xl shadow-2xl p-4 transform origin-top-right transition-all">
+        <div class="mb-4">
+          <label class="block text-xs text-slate-400 mb-2">过滤模式</label>
+          <div class="flex gap-3">
+            <label class="cursor-pointer flex items-center gap-1.5">
+              <input type="radio" name="filterMode" value="exclude" class="checkbox-base radio-base" checked />
+              <span class="text-xs text-slate-300">排除</span>
+            </label>
+            <label class="cursor-pointer flex items-center gap-1.5">
+              <input type="radio" name="filterMode" value="include" class="checkbox-base radio-base" />
+              <span class="text-xs text-slate-300">保留</span>
+            </label>
+          </div>
+        </div>
+        <div class="mb-4">
+          <label for="excludeKeywords" class="block text-xs text-slate-400 mb-1.5">排除关键词 (逗号分隔)</label>
+          <textarea
+            id="excludeKeywords"
+            rows="3"
+            class="w-full bg-slate-950 border border-slate-700 rounded-lg p-2 text-xs text-slate-300 focus:border-indigo-500 focus:outline-none resize-y font-mono"
+          >
+distill,bge,embedding,evil,flux,live,qvq,qwq,audio,tts,veo,gemma,gemini-1.5,gemini-2.0,writer,baichuan,phi</textarea
+          >
+        </div>
+        <div>
+          <label for="includeKeywords" class="block text-xs text-slate-400 mb-1.5">保留关键词 (逗号分隔)</label>
+          <textarea
+            id="includeKeywords"
+            rows="3"
+            class="w-full bg-slate-950 border border-slate-700 rounded-lg p-2 text-xs text-slate-300 focus:border-indigo-500 focus:outline-none resize-y font-mono"
+          >
+gpt,gemini,claude,grok,deepseek,glm,minimax,kimi,doubao,qwen</textarea
+          >
+        </div>
+      </div>
+
+      <div id="statusContainer"></div>
+    </div>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.2/codemirror.min.js"></script>
+    <script>
+      {
+        {
+          APP_JS;
+        }
+      }
+    </script>
+  </body>
+</html>
