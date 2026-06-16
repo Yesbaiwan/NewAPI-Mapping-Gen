@@ -31,7 +31,7 @@ function clearEditors() {
 }
 
 function copyToFinalModels() {
-  finalModelsEditor.setValue(allModelsEditor.getValue());
+  finalModelsEditor.setValue(allModelsEditor.getValue().split('\n').map(m => m.toLowerCase()).join('\n'));
   showStatus('✅ 源模型已复制到最终模型列表', 'success');
 }
 
