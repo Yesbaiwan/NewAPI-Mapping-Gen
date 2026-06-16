@@ -8,7 +8,7 @@ async function fetchModels() {
       body: JSON.stringify(cfg),
     });
     const { filteredModels = [], totalCount = 0, filteredCount = 0 } = r;
-    setEditorValues(filteredModels.join('\n'), filteredModels.join('\n'));
+    setEditorValues(filteredModels.join('\n'), filteredModels.map(m => m.toLowerCase()).join('\n'));
     showStatus(cfg.enableFilter ? `✅ 成功获取 ${totalCount} 个模型，过滤后剩余 ${filteredCount} 个` : `✅ 成功获取 ${totalCount} 个模型`, 'success');
   } catch (e) {
     showStatus('❌ 获取失败: ' + e.message, 'error');

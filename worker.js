@@ -81,7 +81,7 @@ async function handleGenerateMapping(request) {
 const jsonResponse = (data, status = 200) => new Response(JSON.stringify(data), { status, headers: { ...HEADERS.json, ...HEADERS.cors } });
 
 export default {
-  async fetch(request) {
+  async fetch(request, env) {
     if (request.method === 'OPTIONS') return new Response(null, { status: 204, headers: HEADERS.cors });
     const pathname = new URL(request.url).pathname;
     const handlers = {
@@ -89,6 +89,13 @@ export default {
       '/fetch': () => handleFetch(request),
       '/generate-mapping': () => handleGenerateMapping(request),
     };
-    return handlers[pathname]?.() ?? new Response('Not Found', { status: 404, headers: HEADERS.cors });
+    const handler = handlers[pathname];
+    if (handler) return handler();
+
+    if (env.ASSETS) {
+      return env.ASSETS.fetch(request);
+    }
+
+    return new Response('Not Found', { status: 404, headers: HEADERS.cors });
   },
 };
