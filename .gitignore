@@ -2,7 +2,7 @@
 node_modules/
 
 # 构建产物
-index.html
+dist/
 
 # Wrangler 本地数据
 .wrangler/
@@ -12,6 +12,7 @@ index.html
 .trae/
 .idea/
 .vscode/
+.zcode/
 *.swp
 *.swo
 

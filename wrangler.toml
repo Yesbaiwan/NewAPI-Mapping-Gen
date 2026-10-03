@@ -1,7 +1,7 @@
-name = "newapi-mapping-generator"
-main = "worker.js"
-compatibility_date = "2024-01-01"
+name = "newapi-mapping-gen"
+main = "worker/index.ts"
+compatibility_date = "2024-09-23"
 
 [assets]
-directory = "public"
+directory = "dist"
 binding = "ASSETS"
