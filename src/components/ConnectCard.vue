@@ -32,7 +32,6 @@ async function onFetch(): Promise<void> {
 
 function onReset(): void {
   Object.assign(config, { ...DEFAULT_CONFIG });
-  toast.success('配置已还原');
 }
 </script>
 

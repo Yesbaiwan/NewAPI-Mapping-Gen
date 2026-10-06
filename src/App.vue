@@ -31,7 +31,8 @@ onBeforeUnmount(() => window.removeEventListener('keydown', onKeydown));
   </div>
   <Toaster
     :theme="isDark ? 'dark' : 'light'"
-    position="bottom-right"
+    position="top-right"
+    :duration="1000"
     rich-colors
     close-button
   />

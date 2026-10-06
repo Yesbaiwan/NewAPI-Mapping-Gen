@@ -34,18 +34,12 @@ const mapping = computed<Record<string, string> | null>(() => {
   return result;
 });
 
-const hasMapping = computed(
-  () => mapping.value !== null && Object.keys(mapping.value).length > 0,
-);
-
 function copyToLower(): void {
   finalText.value = sourceText.value.toLowerCase();
-  toast.success('源模型已转小写填入最终列表');
 }
 
 function onClear(): void {
   clearLists();
-  toast.success('列表已清空');
 }
 
 async function copyModelList(): Promise<void> {
@@ -59,7 +53,7 @@ async function copyModelList(): Promise<void> {
 
 async function copyMapping(): Promise<void> {
   if (!mapping.value) return;
-  if (!hasMapping.value) {
+  if (Object.keys(mapping.value).length === 0) {
     toast.warning('映射前后无变化');
     return;
   }
@@ -151,7 +145,7 @@ async function copyMapping(): Promise<void> {
       <button
         type="button"
         class="btn-primary flex-1 cursor-pointer"
-        :disabled="!hasMapping"
+        :disabled="!mapping || !finalLines.length"
         @click="copyMapping"
       >
         <Copy class="h-4 w-4" />
