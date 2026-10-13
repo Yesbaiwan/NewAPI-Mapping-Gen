@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { computed } from 'vue';
+import { computed, type Ref } from 'vue';
 import {
   ArrowRight,
   Copy,
@@ -12,6 +12,9 @@ import { useModels } from '../composables/useModels';
 
 const { sourceText, finalText, sourceLines, finalLines, loading, clearLists } =
   useModels();
+
+const cutFromSource = (e: KeyboardEvent) => onLineCut(e, sourceText);
+const cutFromFinal = (e: KeyboardEvent) => onLineCut(e, finalText);
 
 async function copyText(text: string): Promise<void> {
   await navigator.clipboard.writeText(text);
@@ -38,8 +41,32 @@ function copyToLower(): void {
   finalText.value = sourceText.value.toLowerCase();
 }
 
-function onClear(): void {
-  clearLists();
+/** 无选区时 Ctrl+X 剪切当前行（连同行尾换行），有选区走浏览器默认剪切 */
+function onLineCut(e: KeyboardEvent, model: Ref<string>): void {
+  if (
+    !e.ctrlKey ||
+    e.key.toLowerCase() !== 'x' ||
+    e.shiftKey ||
+    e.altKey ||
+    e.metaKey
+  )
+    return;
+  const ta = e.target as HTMLTextAreaElement;
+  const { value, selectionStart, selectionEnd } = ta;
+  if (selectionStart !== selectionEnd) return;
+  e.preventDefault();
+  const start = value.lastIndexOf('\n', selectionStart - 1) + 1;
+  let end = value.indexOf('\n', selectionStart);
+  if (end === -1) end = value.length;
+  else end += 1;
+  const line = value.slice(start, end);
+  // 剪贴板不可用（非安全上下文 / 权限拒绝）时不阻断删行
+  const write = navigator.clipboard?.writeText(line);
+  void write?.catch(() => {});
+  model.value = value.slice(0, start) + value.slice(end);
+  requestAnimationFrame(() => {
+    ta.selectionStart = ta.selectionEnd = start;
+  });
 }
 
 async function copyModelList(): Promise<void> {
@@ -84,7 +111,7 @@ async function copyMapping(): Promise<void> {
           type="button"
           class="btn-ghost cursor-pointer"
           :disabled="loading || (!sourceLines.length && !finalLines.length)"
-          @click="onClear"
+          @click="clearLists"
         >
           <Trash2 class="h-3.5 w-3.5" />
           清空列表
@@ -111,6 +138,7 @@ async function copyMapping(): Promise<void> {
           class="list-area"
           spellcheck="false"
           placeholder="获取模型后显示在这里"
+          @keydown="cutFromSource"
         ></textarea>
       </div>
       <div class="flex min-h-0 flex-col">
@@ -128,6 +156,7 @@ async function copyMapping(): Promise<void> {
           class="list-area"
           spellcheck="false"
           placeholder="与左侧逐行对应，直接修改映射名称"
+          @keydown="cutFromFinal"
         ></textarea>
       </div>
     </div>

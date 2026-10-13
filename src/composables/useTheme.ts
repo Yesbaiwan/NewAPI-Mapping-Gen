@@ -25,8 +25,7 @@ prefersDark.addEventListener('change', (e) => {
 export function useTheme() {
   const setTheme = (id: string): void => {
     userChosen = true;
-    save('theme', id);
-    themeId.value = id;
+    themeId.value = id; // watch 里统一保存
   };
   const isDark = computed(() => findTheme(themeId.value).dark);
   return { themeId, setTheme, isDark };
